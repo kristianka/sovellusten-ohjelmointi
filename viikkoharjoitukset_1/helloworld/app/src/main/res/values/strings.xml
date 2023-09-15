@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">helloworld</string>
+    <string name="header">My app</string>
+    <string name="buttonText">Say Hello</string>
+    <string name="button_off">Click to say Hello!</string>
+    <string name="button_on">Hello!</string>
+</resources>
