@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Currency converter</string>
+    <string name="settings">Settings</string>
+    <string name="convert">Convert</string>
+    <string name="sourceCurrency">Source currency (EUR)</string>
+    <string name="destinationCurrency">Destination currency (USD)</string>
+    <string name="defaultCurrency">0</string>
+    <string name="defaultConversionResult">0</string>
+    <string name="conversionTitle">Settings</string>
+    <string name="change_currencies">Change currencies</string>
+    <string name="back">back</string>
+</resources>

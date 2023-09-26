@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Valuutanmuunnin</string>
+    <string name="settings">Asetukset</string>
+    <string name="convert">Muunna</string>
+    <string name="sourceCurrency">Lähdevaluutta (EUR)</string>
+    <string name="destinationCurrency">Kohdevaluutta (USD)</string>
+    <string name="defaultCurrency">0</string>
+    <string name="defaultConversionResult">0</string>
+    <string name="conversionTitle">Asetukset</string>
+    <string name="change_currencies">Muuta valuutat</string>
+    <string name="back">Takaisin</string>
+</resources>
