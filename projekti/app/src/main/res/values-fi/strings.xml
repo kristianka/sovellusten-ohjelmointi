@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sää</string>
+    <string name="metric_unics">Yksiköt metreinä</string>
+    <string name="settings">Asetukset</string>
+    <string name="back">Takaisin</string>
+    <string name="sunny">Aurinkoista</string>
+    <string name="default_weather">Aurinkoista</string>
+    <string name="default_wind">Tuuli: 0 m/s</string>
+    <string name="default_date">18 Marraskuu, 1:34</string>
+    <string name="default_feels_like">Tuntuu kuin 0 °C</string>
+    <string name="details">Lisätietoja</string>
+    <string name="feels_like">Tuntuu kuin</string>
+    <string name="default_humidity">Ilmankosteus: 60%</string>
+    <string name="humidity">Ilmankosteus</string>
+    <string name="temperature">Lämpötila</string>
+    <string name="wind_speed">Tuulennopeus</string>
+    <string name="icon_credit">Ikonin tehnyt umartvurdu https://www.flaticon.com/free-icons/wind</string>
+</resources>

@@ -12,14 +12,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:drawableRight="@android:drawable/ic_menu_search"
         android:ems="10"
         android:hint="Enter location"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,24 +25,24 @@
         android:id="@+id/weatherTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="Sunny"
-        android:textAlignment="viewStart"
+        android:text="@string/default_weather"
+        android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailsTextView" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/feelsLikeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView" />
 
     <TextView
         android:id="@+id/temperatureTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="241dp"
+        android:layout_height="78dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="75dp"
-        android:text="0 °C"
+        android:layout_marginTop="96dp"
+        android:text="@string/default_temp"
         android:textAlignment="viewStart"
         android:textSize="60sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,24 +53,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="0 m/s"
+        android:text="@string/default_wind"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsTextView" />
 
     <TextView
-        android:id="@+id/windTextView2"
+        android:id="@+id/humidityTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="0 m/s"
+        android:text="@string/default_humidity"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,10 +92,9 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:onClick="openSettings"
-        android:text="Settings"
         app:icon="@android:drawable/ic_menu_manage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -108,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="4dp"
-        android:text="18 November, 1.34"
+        android:text="@string/default_date"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/temperatureTextView"
         app:layout_constraintStart_toStartOf="parent" />
@@ -119,10 +116,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:text="Feels like 0 °C"
+        android:text="@string/default_feels_like"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/temperatureTextView" />
 
@@ -131,23 +126,95 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Details"
+        android:text="@string/details"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/feelsLikeTextView" />
 
     <ImageView
         android:id="@+id/weatherIconImageView"
-        android:layout_width="94dp"
-        android:layout_height="96dp"
+        android:layout_width="108dp"
+        android:layout_height="104dp"
         android:layout_marginTop="68dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="36dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/temperatureTextView"
         app:layout_constraintTop_toBottomOf="@+id/searchText"
         app:srcCompat="@drawable/wind" />
+
+    <TextView
+        android:id="@+id/cityNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/default_city"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/dateTimeTextView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/locationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="getGPSLocation"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/searchText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_mylocation" />
+
+    <ImageView
+        android:id="@+id/sunriseImg"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/sunsetImg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/humidityTextView"
+        app:srcCompat="@drawable/sunrise" />
+
+    <ImageView
+        android:id="@+id/sunsetImg"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sunriseImg"
+        app:layout_constraintTop_toBottomOf="@+id/humidityTextView"
+        app:srcCompat="@drawable/sunset" />
+
+    <TextView
+        android:id="@+id/sunriseTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sunriseImg" />
+
+    <TextView
+        android:id="@+id/sunsetTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sunriseTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sunsetImg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
