@@ -8,19 +8,15 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +27,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import android.view.inputmethod.EditorInfo;
 
@@ -62,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     long sunriseTimestamp;
     long sunsetTimestamp;
 
-
+    // update UI with new values
     public void setValues() {
         TextView cityNameTextView = findViewById(R.id.cityNameTextView);
         TextView weatherTextView = findViewById(R.id.weatherTextView);
@@ -92,19 +87,16 @@ public class MainActivity extends AppCompatActivity {
         Picasso.get().load(iconUrl).into(weatherIconImageView);
     }
 
+    // change units depending on isMetric value
     public void changeUnits() {
         if (isMetric) {
             tempUnit = "°C";
             windUnit = "m/s";
             unit = "metric";
-            // temperature = (temperature - 32) * 5/9;
-            // wind = wind / 2.237;
         } else {
             tempUnit = "°F";
             windUnit = "mph";
             unit = "imperial";
-            // temperature = (temperature * 9/5) + 32;
-            // wind = wind * 2.237;
         }
     }
 
@@ -117,35 +109,44 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         isMetric = intent.getBooleanExtra("IS_METRIC", true);
+
+        // set values from savedInstanceState if exists
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+            restoreSavedData(savedInstanceState);
+        }
         changeUnits();
 
-        if (savedInstanceState != null) {
-            cityName = savedInstanceState.getString("WEATHER_CITY");
-            countryName =  savedInstanceState.getString("WEATHER_COUNTRY");
-            weather = savedInstanceState.getString("WEATHER_WEATHERTYPE");
-            temperature = savedInstanceState.getDouble("WEATHER_TEMPERATURE");
-            feelsLike = savedInstanceState.getDouble("WEATHER_FEELS_LIKE");
-            wind = savedInstanceState.getDouble("WEATHER_WIND");
-            humidity = savedInstanceState.getDouble("WEATHER_HUMIDITY");
-            iconCode = savedInstanceState.getString("WEATHER_ICON_CODE");
-            sunriseTimestamp = savedInstanceState.getLong("WEATHER_SUNRISE");
-            sunsetTimestamp = savedInstanceState.getLong("WEATHER_SUNSET");
-            setValues();
-        }
         // make the search via keyboard press
         locationEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL) {
-                getWeatherData(textView);
+                getWeatherDataByCity(textView);
                 return true;
             }
             return false;
         });
     }
 
-    public void getWeatherData2(Double lat, Double lon) {
-        String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + OPENWEATHERKEY + "&units=" + unit;
+    private void restoreSavedData(Bundle savedInstanceState) {
+        cityName = savedInstanceState.getString("WEATHER_CITY", "");
+        countryName = savedInstanceState.getString("WEATHER_COUNTRY", "");
+        weather = savedInstanceState.getString("WEATHER_WEATHERTYPE", "");
+        temperature = savedInstanceState.getDouble("WEATHER_TEMPERATURE", 0.0);
+        feelsLike = savedInstanceState.getDouble("WEATHER_FEELS_LIKE", 0.0);
+        wind = savedInstanceState.getDouble("WEATHER_WIND", 0.0);
+        humidity = savedInstanceState.getDouble("WEATHER_HUMIDITY", 0.0);
+        iconCode = savedInstanceState.getString("WEATHER_ICON_CODE", "");
+        sunriseTimestamp = savedInstanceState.getLong("WEATHER_SUNRISE", 0);
+        sunsetTimestamp = savedInstanceState.getLong("WEATHER_SUNSET", 0);
+
+        // Update the UI with the restored values
+        setValues();
+    }
+
+    public void getWeatherDataByGPS(Double lat, Double lon) {
+        String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid="
+                + OPENWEATHERKEY + "&units=" + unit;
         StringRequest request = new StringRequest(Request.Method.GET, WEATHER_URL, response -> {
-            Toast.makeText(this, response, Toast.LENGTH_LONG).show();
             parseWeatherJsonAndUpdateUi(response);
         }, error -> {
             Toast.makeText(this, "Unable to find city or network error. Please try again later.", Toast.LENGTH_LONG)
@@ -156,17 +157,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getGPSLocation(View view) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION }, 0);
             return;
         }
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 double lat = location.getLatitude();
                 double lon = location.getLongitude();
-                getWeatherData2(lat, lon);
+                getWeatherDataByGPS(lat, lon);
                 // Remove location updates after receiving the first update
                 locationManager.removeUpdates(this);
             }
@@ -176,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentLocation != null) {
             double lat = currentLocation.getLatitude();
             double lon = currentLocation.getLongitude();
-            getWeatherData2(lat, lon);
+            getWeatherDataByGPS(lat, lon);
             // Remove updates immediately if last known location is available
             locationManager.removeUpdates(locationListener);
         } else {
@@ -202,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         dateTimeTextView.setText(formattedDate + ", " + formattedTime);
     }
 
-    public void getWeatherData(View view) {
+    public void getWeatherDataByCity(View view) {
         EditText locationEditText = findViewById(R.id.searchText);
         String city = locationEditText.getText().toString().trim();
         if (city.isEmpty()) {
@@ -212,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
         String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q= " + city + "&appid=" + OPENWEATHERKEY
                 + "&units=" + unit;
         StringRequest request = new StringRequest(Request.Method.GET, WEATHER_URL, response -> {
-            Toast.makeText(this, response, Toast.LENGTH_LONG).show();
             parseWeatherJsonAndUpdateUi(response);
         }, error -> {
             Toast.makeText(this, "Unable to find city or network error. Please try again later.", Toast.LENGTH_LONG)
@@ -232,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
+    // parse JSON response from server and set values
     private void parseWeatherJsonAndUpdateUi(String response) {
         try {
             JSONObject weatherJSON = new JSONObject(response);
@@ -242,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
             temperature = weatherJSON.getJSONObject("main").getDouble("temp");
             feelsLike = weatherJSON.getJSONObject("main").getDouble("feels_like");
             wind = weatherJSON.getJSONObject("wind").getDouble("speed");
-            humidity =  weatherJSON.getJSONObject("main").getDouble("humidity");
+            humidity = weatherJSON.getJSONObject("main").getDouble("humidity");
             iconCode = weatherJSON.getJSONArray("weather").getJSONObject(0).getString("icon");
             sunriseTimestamp = weatherJSON.getJSONObject("sys").getLong("sunrise");
             sunsetTimestamp = weatherJSON.getJSONObject("sys").getLong("sunset");
@@ -255,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // pass ismetric to settings activity
     public void openSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra("IS_METRIC", isMetric);
@@ -271,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // save values so they work when turning screen
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
@@ -286,11 +293,12 @@ public class MainActivity extends AppCompatActivity {
         bundle.putLong("WEATHER_SUNSET", sunsetTimestamp);
     }
 
+    // get values so they work when turning screen
     @Override
     protected void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
         cityName = bundle.getString("WEATHER_CITY");
-        countryName =  bundle.getString("WEATHER_COUNTRY");
+        countryName = bundle.getString("WEATHER_COUNTRY");
         weather = bundle.getString("WEATHER_WEATHERTYPE");
         temperature = bundle.getDouble("WEATHER_TEMPERATURE");
         feelsLike = bundle.getDouble("WEATHER_FEELS_LIKE");
@@ -299,6 +307,8 @@ public class MainActivity extends AppCompatActivity {
         iconCode = bundle.getString("WEATHER_ICON_CODE");
         sunriseTimestamp = bundle.getLong("WEATHER_SUNRISE");
         sunsetTimestamp = bundle.getLong("WEATHER_SUNSET");
-    }
 
+        // Update the UI with the restored values
+        setValues();
+    }
 }

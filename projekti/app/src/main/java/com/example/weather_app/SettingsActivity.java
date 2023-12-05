@@ -10,16 +10,25 @@ import android.widget.Switch;
 public class SettingsActivity extends AppCompatActivity {
 
     public boolean isMetric;
+    public boolean isMetricOnEntrance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Intent intent = getIntent();
-        isMetric = intent.getBooleanExtra("IS_METRIC", true);
         Switch isMetricToggle = findViewById(R.id.isMetricToggle);
-        isMetricToggle.setChecked(isMetric);
+        Intent intent = getIntent();
+
+        if (savedInstanceState != null) {
+            isMetric = savedInstanceState.getBoolean("IS_METRIC", true);
+            isMetricToggle.setChecked(isMetric);
+        } else {
+            isMetric = intent.getBooleanExtra("IS_METRIC", true);
+            isMetricToggle.setChecked(isMetric);
+        }
+
+        isMetricOnEntrance = isMetric;
     }
 
     public void toggleMetric(View view) {
@@ -30,6 +39,29 @@ public class SettingsActivity extends AppCompatActivity {
     public void back(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("IS_METRIC", isMetric);
+        if (isMetricOnEntrance == isMetric) {
+            finish();
+            return;
+        }
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("IS_METRIC", isMetric);
+        if (isMetricOnEntrance == isMetric) {
+            finish();
+            return;
+        }
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstance) {
+        super.onSaveInstanceState(savedInstance);
+        savedInstance.putBoolean("IS_METRIC", isMetric);
+    }
+
 }
