@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, WEATHER_URL, response -> {
             parseWeatherJsonAndUpdateUi(response);
         }, error -> {
-            Toast.makeText(this, "Unable to find city or network error. Please try again later.", Toast.LENGTH_LONG)
+            Toast.makeText(this, R.string.volley_error, Toast.LENGTH_LONG)
                     .show();
         });
         // Add to request queue
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         EditText locationEditText = findViewById(R.id.searchText);
         String city = locationEditText.getText().toString().trim();
         if (city.isEmpty()) {
-            Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.empty_location_error, Toast.LENGTH_SHORT).show();
             return;
         }
         String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q= " + city + "&appid=" + OPENWEATHERKEY
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, WEATHER_URL, response -> {
             parseWeatherJsonAndUpdateUi(response);
         }, error -> {
-            Toast.makeText(this, "Unable to find city or network error. Please try again later.", Toast.LENGTH_LONG)
+            Toast.makeText(this, R.string.volley_error, Toast.LENGTH_LONG)
                     .show();
         });
         // Add to request queue

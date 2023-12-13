@@ -16,4 +16,7 @@
     <string name="temperature">Lämpötila</string>
     <string name="wind_speed">Tuulennopeus</string>
     <string name="icon_credit">Ikonin tehnyt umartvurdu https://www.flaticon.com/free-icons/wind</string>
+    <string name="sun_credits">Auringonlasku ja -nousu ikonit tehnyt Mehwish https://www.flaticon.com/free-icons/sunset</string>
+    <string name="volley_error">Verkkovirhe tai kaupunkia ei löytynyt.</string>
+    <string name="empty_location_error">Syötä kaupunki</string>
 </resources>

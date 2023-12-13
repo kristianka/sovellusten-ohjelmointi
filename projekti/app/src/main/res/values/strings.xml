@@ -18,4 +18,6 @@
     <string name="wind_speed">Wind speed</string>
     <string name="icon_credit">App icon created by umartvurdu https://www.flaticon.com/free-icons/wind</string>
     <string name="sun_credits">Sunrise and sunset icons created by Mehwish https://www.flaticon.com/free-icons/sunset</string>
+    <string name="volley_error">Unable to find city or network error. Please try again later.</string>
+    <string name="empty_location_error">Please enter a location</string>
 </resources>
